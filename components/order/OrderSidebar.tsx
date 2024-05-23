@@ -1,17 +1,24 @@
-import { PrismaClient } from "@prisma/client"
-
-const prismaClient = new PrismaClient()
+import { prisma } from "@/src/lib/prisma"
+import CategoryIcons from "../ui/CategoryIcons";
 
 async function getCategories() {
-  const categories = prismaClient.category.findMany()
-  console.log(categories);
+  return await prisma.category.findMany();
   
 }
 
-export default function OrderSidebar() {
+export default async function OrderSidebar() {
+  const categories = await getCategories()
+
   return (
     <aside className="md:w-72 md:h-screen bg-white">
-      OrderSidebar
+      <nav className="mt-10">
+        {categories.map(category => (
+          <CategoryIcons
+            key={category.id}
+            category={category}
+          />
+        ))}
+      </nav>
     </aside>
   )
 }
