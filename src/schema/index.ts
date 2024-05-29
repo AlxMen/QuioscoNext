@@ -3,17 +3,27 @@ import { z } from "zod";
 export const OrderSchema = z.object({
   name: z.string().min(1, "El nombre es obligatorio"),
   total: z.number().min(1, "Hay Errores en la orden"),
-  order: z.array(z.object({
-    id: z.number(),
-    name: z.string(),
-    price: z.number(),
-    quantity: z.number(),
-    subtotal: z.number(),
-  }))
+  order: z.array(
+    z.object({
+      id: z.number(),
+      name: z.string(),
+      price: z.number(),
+      quantity: z.number(),
+      subtotal: z.number(),
+    })
+  ),
 });
 
 export const OrderIdSchema = z.object({
-  orderId: z.string()
+  orderId: z
+    .string()
     .transform((value) => parseInt(value))
-    .refine( value => value > 0, {message: 'hay errores'})
-})
+    .refine((value) => value > 0, { message: "hay errores" }),
+});
+
+export const SearchSchema = z.object({
+  search: z
+    .string()
+    .trim()
+    .min(1, { message: "La busqueda no puede ir vacia" }),
+});
